@@ -5,10 +5,13 @@ use XML::Parser;
 use LWP::Simple;
 use CGI::Carp 'fatalsToBrowser';
 use HTML::Entities;
+use CGI;
 
+my $q = CGI->new;
 my %attribs;
 my %links;
 my $curAttrib;
+my @tags;
 
 my $showads = 0;
 
@@ -20,11 +23,15 @@ sub handle_start {
 		$curAttrib = $data{'rel'};
 		$links{$curAttrib} = $data{'href'};
 	}
+	if ($type eq 'category' && $data{'term'}) {
+		push (@tags, $data{'term'});
+	}
 	undef $attribs{$curAttrib};
 
 	if ($type eq 'entry') {
 		undef %links;
 		undef %attribs;
+		@tags = ();
 	}
 }
 
@@ -90,12 +97,20 @@ sub handle_end {
 			. textybox('[url=' . $links{'alternate'} 
 			. '][img]' . $img . '[/img][/url]')
 			. '</li>';
+		if (scalar @tags > 0) {
+			print '<li class="tags"><span>See more:</span> ';
+			foreach my $tag (@tags) {
+				print ' <a href="?tag=' . encode_entities($tag)
+					. '">' . $tag . '</a>';
+			}
+			print '</li>';
+		}
 		print '</ul>';
 		print '</div></div>';
 	}
 }
 
-print "Content-type: text/html; charset=utf-8\n\n";
+print $q->header(-type=>"text/html; charset=utf-8");
 print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head><title>The Flickr Random Image Generatr</title>
 <style type="text/css">
@@ -118,6 +133,7 @@ h1 { border-bottom: double black 3px; }
 	padding-right: 1ex;
 }
 .meta li { white-space: nowrap; }
+.meta li.tags { white-space: normal; }
 #footer { font-size: small; clear: both; margin-top: 1ex;}
 #side-ad { float: right; }
 input.code {
@@ -151,7 +167,12 @@ print '
 my $parser = new XML::Parser(Handlers => {Start => \&handle_start,
 					  End => \&handle_end,
 					  Char => \&handle_char}) or die "Couldn't create parser";
-my $content = LWP::Simple::get('http://api.flickr.com/services/feeds/photos_public.gne');
+
+my $feedUrl = 'http://api.flickr.com/services/feeds/photos_public.gne';
+if ($q->param('tag')) {
+	$feedUrl .= '?tags=' . encode_entities($q->param('tag'));
+}
+my $content = LWP::Simple::get($feedUrl);
 
 print '<div id="images">';
 
@@ -159,7 +180,7 @@ $parser->parse($content) or die "Couldn't parse: $@";
 print <<EOF
 </div>
 
-<div id="footer">This page is not affiliated with Flickr. For entertainment purposes only. Not to be taken internally. Images all taken from the <a href="http://api.flickr.com/services/feeds/photos_public.gne">Flickr public RSS feed</a>.</div>
+<div id="footer">This page is not affiliated with Flickr. For entertainment purposes only. Not to be taken internally. Images all taken from the <a href="' . $feedUrl . '">Flickr public RSS feed</a>.</div>
 
 </body></html>
 
