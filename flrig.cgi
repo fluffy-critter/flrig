@@ -154,7 +154,7 @@ print '
 <h1>The <a href="http://flickr.com/">Flickr</a> ' 
 	. ($tag ? join(' ',map(ucfirst,split(/,/,$tag))) : 'Random') . ' Image Generatr';
 if ($tag) {
-	print '<span><a href="?">make it random</span>';
+	print '<span><a href="?">make it random</a></span>';
 }
 print '</h1>';
 
