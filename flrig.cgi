@@ -114,7 +114,6 @@ print $q->header(-type=>"text/html; charset=utf-8");
 print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head><title>The Flickr Random Image Generatr</title>
 <style type="text/css">
-span { font-weight: bold; }
 ul { list-style-type: none; margin: 4px 0px 0px 1em; padding: 0px 0px 0px 52px; }
 li { margin-left: 2em; text-indent: -2em; }
 img { border: solid black 1px; margin: 4px; vertical-align: middle; }
@@ -123,6 +122,7 @@ img.b { float: right; }*/
 img.userpic { position: relative; float: left; left: 0ex; top: 0ex; }
 h1 { border-bottom: double black 3px; }
 .image { border-bottom: dotted black 1px; margin-bottom: 1ex; padding-bottom: 1ex; }
+h1 span { font-size: x-small; font-weight: normal; float: right; }
 .meta {
 	background: #cccccc;
 	-moz-border-radius: 1ex;
@@ -132,6 +132,7 @@ h1 { border-bottom: double black 3px; }
 	overflow-x: hidden;
 	padding-right: 1ex;
 }
+.meta span { font-weight: bold; }
 .meta li { white-space: nowrap; }
 .meta li.tags { white-space: normal; }
 #footer { font-size: small; clear: both; margin-top: 1ex;}
@@ -147,14 +148,15 @@ input.code {
 </head><body>
 ';
 
-print '
-<h1>The <a href="http://flickr.com/">Flickr</a> Random Image Generatr</h1>
-';
-
 my $tag = $q->param('tag');
+
+print '
+<h1>The <a href="http://flickr.com/">Flickr</a> ' 
+	. ($tag ? join(' ',map(ucfirst,split(/,/,$tag))) : 'Random') . ' Image Generatr';
 if ($tag) {
-	print '<h2>Tag: ' . $tag . ' (<a href="?">remove</a>)</h2>';
+	print '<span><a href="?">make it random</span>';
 }
+print '</h1>';
 
 if ($showads) {
 print '
@@ -185,7 +187,7 @@ $parser->parse($content) or die "Couldn't parse: $@";
 print <<EOF
 </div>
 
-<div id="footer">This page is not affiliated with Flickr. For entertainment purposes only. Not to be taken internally. Images all taken from the <a href="' . $feedUrl . '">Flickr public RSS feed</a>.</div>
+<div id="footer">This page is not affiliated with Flickr. For entertainment purposes only. Not to be taken internally. Images all taken from the <a href="$feedUrl">Flickr public RSS feed</a>.</div>
 
 </body></html>
 
