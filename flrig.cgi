@@ -151,6 +151,11 @@ print '
 <h1>The <a href="http://flickr.com/">Flickr</a> Random Image Generatr</h1>
 ';
 
+my $tag = $q->param('tag');
+if ($tag) {
+	print '<h2>Tag: ' . $tag . ' (<a href="?">remove</a>)</h2>';
+}
+
 if ($showads) {
 print '
 <!-- Project Wonderful ad code -->
@@ -169,8 +174,8 @@ my $parser = new XML::Parser(Handlers => {Start => \&handle_start,
 					  Char => \&handle_char}) or die "Couldn't create parser";
 
 my $feedUrl = 'http://api.flickr.com/services/feeds/photos_public.gne';
-if ($q->param('tag')) {
-	$feedUrl .= '?tags=' . encode_entities($q->param('tag'));
+if ($tag) {
+	$feedUrl .= '?tags=' . encode_entities($tag);
 }
 my $content = LWP::Simple::get($feedUrl);
 
