@@ -110,9 +110,12 @@ sub handle_end {
 	}
 }
 
+my $tag = $q->param('tag');
+my $pagename = $tag ? join(' ',map(ucfirst,split(/,/,$tag))) : 'Random';
+
 print $q->header(-type=>"text/html; charset=utf-8");
 print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head><title>The Flickr Random Image Generatr</title>
+<html><head><title>The Flickr ' . $pagename . ' Image Generatr</title>
 <style type="text/css">
 ul { list-style-type: none; margin: 4px 0px 0px 1em; padding: 0px 0px 0px 52px; }
 li { margin-left: 2em; text-indent: -2em; }
@@ -148,11 +151,8 @@ input.code {
 </head><body>
 ';
 
-my $tag = $q->param('tag');
 
-print '
-<h1>The <a href="http://flickr.com/">Flickr</a> ' 
-	. ($tag ? join(' ',map(ucfirst,split(/,/,$tag))) : 'Random') . ' Image Generatr';
+print '<h1>The <a href="http://flickr.com/">Flickr</a> ' . $pagename . ' Image Generatr';
 if ($tag) {
 	print '<span><a href="?">make it random</a></span>';
 }
