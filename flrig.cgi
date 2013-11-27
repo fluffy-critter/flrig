@@ -13,7 +13,7 @@ my %links;
 my $curAttrib;
 my @tags;
 
-my $showads = 0;
+my $showads = 1;
 
 sub handle_start {
         my ($expat, $type, %data) = @_;
@@ -114,7 +114,7 @@ my $tag = $q->param('tag');
 my $pagename = $tag ? join(' ',map(ucfirst,split(/,/,$tag))) : 'Random';
 
 print $q->header(-type=>"text/html; charset=utf-8");
-print '<!DOCTYPE html>
+print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head><title>The Flickr ' . $pagename . ' Image Generatr</title>
 <style type="text/css">
 ul { list-style-type: none; margin: 4px 0px 0px 1em; padding: 0px 0px 0px 52px; }
@@ -139,7 +139,7 @@ h1 span { font-size: x-small; font-weight: normal; float: right; }
 .meta li { white-space: nowrap; }
 .meta li.tags { white-space: normal; }
 #footer { font-size: small; clear: both; margin-top: 1ex;}
-#side-ad { float: right; }
+#pw_adbox_70223_3_0 { float: right; }
 input.code {
 	background: #ffc;
 	border: solid black 1px;
@@ -159,16 +159,34 @@ if ($tag) {
 print '</h1>';
 
 if ($showads) {
-print '
-<!-- Project Wonderful ad code -->
+print <<EOF;
+<!-- Project Wonderful Ad Box Loader -->
+<!-- Put this after the <body> tag at the top of your page -->
 <script type="text/javascript">
-   var pw_d=document;
-   pw_d.projectwonderful_adbox_id = "57857";
-   pw_d.projectwonderful_adbox_type = "1";
+   (function(){function pw_load(){
+      if(arguments.callee.z)return;else arguments.callee.z=true;
+      var d=document;var s=d.createElement('script');
+      var x=d.getElementsByTagName('script')[0];
+      s.type='text/javascript';s.async=true;
+      s.src='//www.projectwonderful.com/pwa.js';
+      x.parentNode.insertBefore(s,x);}
+   if (window.attachEvent){
+    window.attachEvent('DOMContentLoaded',pw_load);
+    window.attachEvent('onload',pw_load);}
+   else{
+    window.addEventListener('DOMContentLoaded',pw_load,false);
+    window.addEventListener('load',pw_load,false);}})();
 </script>
-<script type="text/javascript" src="http://www.projectwonderful.com/ad_display.js"></script>
-<!-- End of Project Wonderful ad code -->
-';
+<!-- End Project Wonderful Ad Box Loader -->
+
+<!-- Project Wonderful Ad Box Code -->
+<div id="pw_adbox_70223_3_0"></div>
+<script type="text/javascript"></script>
+<noscript><map name="admap70223" id="admap70223"><area href="http://www.projectwonderful.com/out_nojs.php?r=0&c=0&id=70223&type=3" shape="rect" coords="0,0,160,600" title="" alt="" target="_blank" /></map>
+<table cellpadding="0" cellspacing="0" style="width:160px;border-style:none;background-color:#ffffff;"><tr><td><img src="http://www.projectwonderful.com/nojs.php?id=70223&type=3" style="width:160px;height:600px;border-style:none;" usemap="#admap70223" alt="" /></td></tr><tr><td style="background-color:#ffffff;" colspan="1"><center><a style="font-size:10px;color:#0000ff;text-decoration:none;line-height:1.2;font-weight:bold;font-family:Tahoma, verdana,arial,helvetica,sans-serif;text-transform: none;letter-spacing:normal;text-shadow:none;white-space:normal;word-spacing:normal;" href="http://www.projectwonderful.com/advertisehere.php?id=70223&type=3" target="_blank">Ads by Project Wonderful!  Your ad here, right now: $0</a></center></td></tr></table>
+</noscript>
+<!-- End Project Wonderful Ad Box Code -->
+EOF
 }
 
 my $parser = new XML::Parser(Handlers => {Start => \&handle_start,
