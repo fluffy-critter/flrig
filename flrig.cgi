@@ -100,7 +100,7 @@ sub handle_end {
 		if (scalar @tags > 0) {
 			print '<li class="tags"><span>See more:</span> ';
 			foreach my $tag (@tags) {
-				print ' <a href="?tag=' . encode_entities($tag)
+				print ' <a rel="nofollow" href="?tag=' . encode_entities($tag)
 					. '">' . $tag . '</a>';
 			}
 			print '</li>';
