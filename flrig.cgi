@@ -5,7 +5,7 @@ use XML::Parser;
 use LWP::Simple;
 use CGI::Carp 'fatalsToBrowser';
 use HTML::Entities;
-use CGI;
+use CGI qw(:standard);
 
 my $q = CGI->new;
 my %attribs;
@@ -14,6 +14,8 @@ my $curAttrib;
 my @tags;
 
 my $showads = 1;
+
+my $showtags = ($ENV{'HTTP_USER_AGENT'} !~ qw(\+[a-z]*://));
 
 sub handle_start {
         my ($expat, $type, %data) = @_;
@@ -97,7 +99,7 @@ sub handle_end {
 			. textybox('[url=' . $links{'alternate'} 
 			. '][img]' . $img . '[/img][/url]')
 			. '</li>';
-		if (scalar @tags > 0) {
+		if ($showtags && scalar @tags > 0) {
 			print '<li class="tags"><span>See more:</span> ';
 			foreach my $tag (@tags) {
 				print ' <a rel="nofollow" href="?tag=' . encode_entities($tag)
