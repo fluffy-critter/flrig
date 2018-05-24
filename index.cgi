@@ -125,8 +125,20 @@ while (FCGI::accept >= 0) {
 	print '@import url("custom.css");';
     }
 
-    print '</style></head><body>
-';
+    print '</style>';
+
+    if (-f "head.inc") {
+	my $buf;
+	open (ADBOX, "head.inc");
+	while (read(ADBOX, $buf, 8192)) {
+	    print $buf;
+	}
+	close (ADBOX);
+    }
+ 
+    print '</head>';
+
+    print '<body>';
 
 
     print '<h1>The <a href="http://flickr.com/">Flickr</a> ' . $pagename . ' Image Generatr';
