@@ -1,3 +1,12 @@
+#pw_adbox_70223_3_0 {
+	float: right;
+	padding: 0 0 1em 1em;
+	background: white;
+}
+
+#pw_adbox_1715_1_0 {
+}
+
 h1 { text-align: center; }
 h2 { border-bottom: double black 3px; }
 
@@ -5,7 +14,7 @@ h2 { border-bottom: double black 3px; }
     border-top: solid black 1px;
     padding: 1em 0;
     vertical-align: top;
-    clear: both;
+    clear: left;
 }
 
 h3 { margin: 0; padding: 0; }
