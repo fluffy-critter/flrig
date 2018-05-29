@@ -9,7 +9,7 @@ app = flask.Flask(__name__)
 def get_feed(tag=None):
     params = {'format': 'atom'}
     if tag:
-        params['tag'] = tag
+        params['tags'] = tag
 
     req = requests.get(
         'http://api.flickr.com/services/feeds/photos_public.gne', params=params)
