@@ -81,7 +81,7 @@
   {% if tags %}
   <div class="tags">See more: <ul>
   {% for tag in tags %}
-  <li><a href="{{url_for('flrig', tag=tag.term)}}">{{tag.term}}</a></li>
+  <li><a rel="nofollow" href="{{url_for('flrig', tag=tag.term)}}">{{tag.term}}</a></li>
   {% endfor %}
   </ul></div>
   {% endif %}
