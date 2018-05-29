@@ -1,1 +1,48 @@
-/* TODO */
+h1 { text-align: center; }
+h2 { border-bottom: double black 3px; }
+
+.photo {
+    border-top: solid black 1px;
+    padding: 1em 0;
+    vertical-align: top;
+    clear: both;
+}
+
+h3 { margin: 0; padding: 0; }
+
+.image {
+    vertical-align: top;
+    float: left;
+}
+
+.image img {
+    margin: 0 1em 1ex 0;
+}
+
+.description {
+    padding-left: 1em;
+    padding: 1ex;
+    vertical-align: top;
+}
+
+.buddy {
+    float: right;
+    margin: 0 0 1ex 1ex;
+}
+
+.tags ul {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.tags li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.tags {
+    margin: 1em 0;
+}

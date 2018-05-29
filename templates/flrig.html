@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>The Flickr {{tag if tag.title() else 'Random'}} Image Generatr</title>
+<title>The Flickr {{tag.title() if tag else 'Random'}} Image Generatr</title>
 <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
 
 <!-- Project Wonderful Ad Box Loader -->
@@ -24,7 +24,7 @@
 
 </head><body>
 
-<h1>The Flickr {{tag if tag.title() else 'Random'}} Image Generatr</h1>
+<h1>The <a href="http://flickr.com/">Flickr</a> {{ tag.title() if tag else 'Random' }} Image Generatr</h1>
 
 <!-- Project Wonderful Ad Box Code -->
 <div id="pw_adbox_70223_3_0"></div>
@@ -48,5 +48,37 @@
 
 {% for item in feed.entries %}
 <div class="photo">
-    <a href="{{item.link}}"><img src=""
+  <div class="image">
+  {% for photo in item.enclosures %}
+    <a href="{{item.link}}"><img title="{{item.title}}" src="{{photo.href.replace('_b.','_m.')}}"></a>
+  {% endfor %}
+  </div>
+
+<div class="description"><div>
+  {% if item.flickr_buddyicon %}
+  <a href="{{item.author_detail.href}}"><img class="buddy" src="{{item.flickr_buddyicon}}" title="{{item.author_detail.name}}"></a>
+  {% endif %}
+
+  <h3><a href="{{item.link}}">{{item.title}}</a> by <a href="{{item.author_detail.href}}">{{item.author_detail.name}}</a>
+  </h3>
+
+
+
+  {% for link in item.links %}
+  {% if link.rel == 'license' %}
+  <div class="license">{{print_license(link.href)}}</div>
+  {% endif %}
+  {% endfor %}
+
+  {% set tags=item.tags|selectattr('term')|list %}
+  {% if tags %}
+  <div class="tags">See more: <ul>
+  {% for tag in tags %}
+  <li><a href="{{url_for('flrig', tag=tag.term)}}">{{tag.term}}</a></li>
+  {% endfor %}
+  </ul></div>
+  {% endif %}
+</div></div>
 </div>
+{% endfor %}
+
