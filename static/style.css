@@ -5,6 +5,10 @@
 }
 
 #pw_adbox_1715_1_0 {
+    clear: both;
+    border-top: solid black 1px;
+    margin-top: 1em;
+    padding-top: 1em;
 }
 
 h1 { text-align: center; }
