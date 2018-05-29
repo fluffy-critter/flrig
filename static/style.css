@@ -29,7 +29,7 @@ h3 { margin: 0; padding: 0; }
 }
 
 .image img {
-    margin: 0 1em 1ex 0;
+    margin: 0 1em 1em 0;
 }
 
 .description {
@@ -58,4 +58,13 @@ h3 { margin: 0; padding: 0; }
 
 .tags {
     margin: 1em 0;
+}
+
+.content {
+    font-size: small;
+    font-style: italic;
+}
+
+.content img {
+    display: none;
 }

@@ -59,11 +59,23 @@
 
 
 
-  {% for link in item.links %}
-  {% if link.rel == 'license' %}
-  <div class="license">{{print_license(link.href)}}</div>
-  {% endif %}
-  {% endfor %}
+  <div class="license">
+    {% set license = item.links|selectattr('rel', 'equalto', 'license') %}
+    {% for l in license %}
+        {% if 'publicdomain' in l.href %}
+            Released to the <a href="{{l.href}}">public domain</a>
+        {% elif 'creativecommons.org/licenses/' in l.href %}
+            Available under a <a href="{{l.href}}">Creative Commons
+            {{l.href.split('/')[4]}} license</a>
+        {% else %}
+            Unrecognized license: <a href="{{l.href}}">{{l.href}}</a>
+        {% endif %}
+    {% else %}
+      &copy; <a href="{{item.author_detail.href}}">{{item.author_detail.name}}</a>, all rights reserved.
+    {% endfor %}
+</div>
+
+  <div class="content">{{filter_description(item.description)}}</div>
 
   {% set tags=item.tags|selectattr('term')|list %}
   {% if tags %}
