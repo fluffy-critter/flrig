@@ -27,11 +27,17 @@ def filter_description(content):
 @app.route('/')
 @app.route('/<string:tag>')
 def flrig(tag=None):
+    tag = tag or flask.request.args.get('tag')
     return flask.render_template(
         'flrig.html',
         feed=get_feed(tag),
         tag=tag,
         filter_description=filter_description)
+
+
+@app.route('/robots.txt')
+def robots_txt():
+    return flask.render_template('robots.txt'), {'Content-Type': 'text/plain'}
 
 if __name__ == '__main__':
     app.run(debug=True)
