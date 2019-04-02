@@ -3,35 +3,7 @@
 <head>
 <title>The Flickr {{tag.title() if tag else 'Random'}} Image Generatr</title>
 <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
-
-<!-- Project Wonderful Ad Box Loader -->
-<script type="text/javascript">
-   (function(){function pw_load(){
-      if(arguments.callee.z)return;else arguments.callee.z=true;
-      var d=document;var s=d.createElement('script');
-      var x=d.getElementsByTagName('script')[0];
-      s.type='text/javascript';s.async=true;
-      s.src='//www.projectwonderful.com/pwa.js';
-      x.parentNode.insertBefore(s,x);}
-   if (window.attachEvent){
-    window.attachEvent('DOMContentLoaded',pw_load);
-    window.attachEvent('onload',pw_load);}
-   else{
-    window.addEventListener('DOMContentLoaded',pw_load,false);
-    window.addEventListener('load',pw_load,false);}})();
-</script>
-<!-- End Project Wonderful Ad Box Loader -->
-
 </head><body>
-
-<!-- Project Wonderful Ad Box Code -->
-<div id="pw_adbox_70223_3_0"></div>
-<script type="text/javascript"></script>
-<noscript><map name="admap70223" id="admap70223"><area href="http://www.projectwonderful.com/out_nojs.php?r=0&c=0&id=70223&type=3" shape="rect" coords="0,0,160,600" title="" alt="" target="_blank" /></map>
-<table cellpadding="0" cellspacing="0" style="width:160px;border-style:none;background-color:#ffffff;"><tr><td><img src="http://www.projectwonderful.com/nojs.php?id=70223&type=3" style="width:160px;height:600px;border-style:none;" usemap="#admap70223" alt="" /></td></tr><tr><td style="background-color:#ffffff;" colspan="1"><center><a style="font-size:10px;color:#0000ff;text-decoration:none;line-height:1.2;font-weight:bold;font-family:Tahoma, verdana,arial,helvetica,sans-serif;text-transform: none;letter-spacing:normal;text-shadow:none;white-space:normal;word-spacing:normal;" href="http://www.projectwonderful.com/advertisehere.php?id=70223&type=3" target="_blank">Ads by Project Wonderful!  Your ad here, right now: $0</a></center></td></tr></table>
-</noscript>
-<!-- End Project Wonderful Ad Box Code -->
-
 
 <h1>The <a href="http://flickr.com/">Flickr</a> {{ tag.title() if tag else 'Random' }} Image Generatr</h1>
 
@@ -41,7 +13,9 @@
 
 <p>This page simply reformats the <a href="https://www.flickr.com/services/feeds/">Flickr public RSS feed</a> for purposes of finding inspiration through random exploration. These images are not being copied or stored in any way by this website, nor are any links to them or any metadata about them. All images are &copy; their owners unless otherwise specified.</p>
 
-<p>This site is a <a href="https://beesbuzz.biz/">busybee project</a> and is supported by the <a href="http://patreon.com/fluffy">generosity of viewers like you</a>.</p>
+<p>This site is a <a href="https://beesbuzz.biz/">busybee project</a> and is supported by the <a href="https://beesbuzz.biz/tipjar">generosity of viewers like you</a>.</p>
+
+<p>
 
 {% for item in feed.entries %}
 <div class="photo">
@@ -90,15 +64,6 @@
 </div></div>
 </div>
 {% endfor %}
-
-
-<!-- Project Wonderful Ad Box Code -->
-<div id="pw_adbox_1715_1_0"></div>
-<script type="text/javascript"></script>
-<noscript><map name="admap1715" id="admap1715"><area href="http://www.projectwonderful.com/out_nojs.php?r=0&c=0&id=1715&type=1" shape="rect" coords="0,0,468,60" title="" alt="" target="_top" /></map>
-<table cellpadding="0" cellspacing="0" style="width:468px;border-style:none;background-color:;"><tr><td><img src="http://www.projectwonderful.com/nojs.php?id=1715&type=1" style="width:468px;height:60px;border-style:none;" usemap="#admap1715" alt="" /></td></tr><tr><td colspan="1"><center><a style="font-size:10px;color:#0000ff;text-decoration:none;line-height:1.2;font-weight:bold;font-family:Tahoma, verdana,arial,helvetica,sans-serif;text-transform: none;letter-spacing:normal;text-shadow:none;white-space:normal;word-spacing:normal;" href="http://www.projectwonderful.com/advertisehere.php?id=1715&type=1&tag=2064" target="_blank">Your ad here, right now: $0</a></center></td></tr></table>
-</noscript>
-<!-- End Project Wonderful Ad Box Code -->
 
 
 </body>
