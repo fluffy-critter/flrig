@@ -12,7 +12,7 @@ def get_feed(tag=None):
         params['tags'] = tag
 
     req = requests.get(
-        'http://api.flickr.com/services/feeds/photos_public.gne', params=params)
+        'https://api.flickr.com/services/feeds/photos_public.gne', params=params)
     feed = feedparser.parse(req.text)
 
     return feed
