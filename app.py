@@ -27,7 +27,9 @@ def filter_description(content):
 @app.route('/')
 @app.route('/<string:tag>')
 def flrig(tag=None):
-    tag = tag or flask.request.args.get('tag')
+    if flask.request.args.get('tag'):
+        return flask.redirect(flask.url_for('flrig', tag=flask.request.args.get('tag')), 301)
+
     return flask.render_template(
         'flrig.html',
         feed=get_feed(tag),
