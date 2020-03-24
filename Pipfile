@@ -8,6 +8,7 @@ flask = "*"
 feedparser = "*"
 requests = "*"
 gunicorn = "*"
+flask-caching = "*"
+python-memcached = "*"
 
 [dev-packages]
-

@@ -2,10 +2,16 @@ import flask
 import feedparser
 import requests
 import re
+from flask_caching import Cache
 
 app = flask.Flask(__name__)
+cache = Cache(app, config={
+    'CACHE_TYPE': 'memcached',
+    'CACHE_DEFAULT_TIMEOUT': 60,
+    'CACHE_KEY_PREFIX': 'flrig.beesbuzz.biz',
+})
 
-
+@cache.cached()
 def get_feed(tag=None):
     params = {'format': 'atom'}
     if tag:
@@ -26,6 +32,7 @@ def filter_description(content):
 
 @app.route('/')
 @app.route('/<string:tag>')
+@cache.cached()
 def flrig(tag=None):
     if flask.request.args.get('tag'):
         return flask.redirect(flask.url_for('flrig', tag=flask.request.args.get('tag')), 301)
@@ -39,7 +46,8 @@ def flrig(tag=None):
 
 @app.route('/robots.txt')
 def robots_txt():
-    return flask.render_template('robots.txt'), {'Content-Type': 'text/plain'}
+    return flask.send_file('robots.txt')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
