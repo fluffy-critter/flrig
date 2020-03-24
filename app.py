@@ -11,7 +11,6 @@ cache = Cache(app, config={
     'CACHE_KEY_PREFIX': 'flrig.beesbuzz.biz',
 })
 
-@cache.cached()
 def get_feed(tag=None):
     params = {'format': 'atom'}
     if tag:
