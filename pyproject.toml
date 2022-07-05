@@ -12,8 +12,12 @@ Flask-Caching = "^1.9.0"
 python-memcached = "^1.59"
 feedparser = "^6.0.2"
 Flask = "^1.1.2"
+wordfilter = "^0.2.7"
 
 [tool.poetry.dev-dependencies]
+autopep8 = "^1.6.0"
+isort = "^5.10.1"
+pylint = "^2.14.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
