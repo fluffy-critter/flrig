@@ -5,7 +5,7 @@ description = ""
 authors = ["fluffy <fluffy@beesbuzz.biz>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 python-memcached = "^1.59"
 Flask = "^2.1.2"
 wordfilter = "^0.2.7"
