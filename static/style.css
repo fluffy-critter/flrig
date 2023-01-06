@@ -10,19 +10,10 @@ h2 { border-bottom: double black 3px; }
 
 h3 { margin: 0; padding: 0; }
 
-.image {
-    vertical-align: top;
-    float: left;
-}
-
 .image img {
+    max-width: calc(100% - 10em);
+    float: left;
     margin: 0 1em 1em 0;
-}
-
-.description {
-    padding-left: 1em;
-    padding: 1ex;
-    vertical-align: top;
 }
 
 .buddy {

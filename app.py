@@ -16,12 +16,14 @@ cache = Cache(app, config={
 
 
 def get_feed(tag=None):
+    """ Retrieve the Flickr feed, with the optional tag """
     params = {'format': 'atom'}
     if tag:
         params['tags'] = tag
 
     req = requests.get(
-        'https://api.flickr.com/services/feeds/photos_public.gne', params=params)
+        'https://api.flickr.com/services/feeds/photos_public.gne', params=params,
+        timeout=30)
     feed = feedparser.parse(req.text)
 
     wfilter = wordfilter.Wordfilter()
@@ -37,6 +39,7 @@ def get_feed(tag=None):
 
 
 def filter_description(content):
+    """ Fix the item description """
     lines = content.splitlines()[2:]
 
     return flask.Markup('\n'.join(lines))
@@ -46,6 +49,7 @@ def filter_description(content):
 @app.route('/<string:tag>')
 @cache.cached()
 def flrig(tag=None):
+    """ main page handler """
     if tag and wordfilter.Wordfilter().blacklisted(tag):
         raise http_error.NotFound("I don't know what that word means")
 
@@ -61,6 +65,7 @@ def flrig(tag=None):
 
 @app.route('/robots.txt')
 def robots_txt():
+    """ robots.txt handler """
     return flask.send_file('robots.txt')
 
 
