@@ -53,9 +53,6 @@ def flrig(tag=None):
     if tag and wordfilter.Wordfilter().blacklisted(tag):
         raise http_error.NotFound("I don't know what that word means")
 
-    if flask.request.args.get('tag'):
-        return flask.redirect(flask.url_for('flrig', tag=flask.request.args.get('tag')), 301)
-
     return flask.render_template(
         'flrig.html',
         feed=get_feed(tag),
