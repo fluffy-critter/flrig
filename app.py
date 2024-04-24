@@ -14,7 +14,7 @@ cache = Cache(app, config={
     'CACHE_KEY_PREFIX': 'flrig.beesbuzz.biz',
 })
 
-
+@cache.cached()
 def get_feed(tag=None):
     """ Retrieve the Flickr feed, with the optional tag """
     params = {'format': 'atom'}
@@ -23,7 +23,7 @@ def get_feed(tag=None):
 
     req = requests.get(
         'https://api.flickr.com/services/feeds/photos_public.gne', params=params,
-        timeout=30)
+        timeout=10)
     feed = feedparser.parse(req.text)
 
     wfilter = wordfilter.Wordfilter()
@@ -47,18 +47,21 @@ def filter_description(content):
 
 @app.route('/')
 @app.route('/<string:tag>')
-@cache.cached()
 def flrig(tag=None):
     """ main page handler """
     if tag and wordfilter.Wordfilter().blacklisted(tag):
         raise http_error.NotFound("I don't know what that word means")
 
-    return flask.render_template(
-        'flrig.html',
-        feed=get_feed(tag),
-        tag=tag,
-        filter_description=filter_description)
-
+    try:
+        return flask.render_template(
+            'flrig.html',
+            feed=get_feed(tag),
+            tag=tag,
+            filter_description=filter_description)
+    except (Timeout, ConnectionError) as ex:
+        return flask.render_template(
+            'error.html',
+            error=ex)
 
 @app.route('/robots.txt')
 def robots_txt():
