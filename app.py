@@ -6,6 +6,20 @@ import requests
 import werkzeug.exceptions as http_error
 import wordfilter
 from flask_caching import Cache
+import logging
+import logging.handlers
+import os
+
+APP_PATH = os.path.dirname(os.path.abspath(__file__))
+logging.basicConfig(level=logging.INFO,
+                    handlers=[
+                        logging.handlers.TimedRotatingFileHandler(
+                            os.path.join(APP_PATH,'logs','flrig.log'), when='D'),
+                        logging.StreamHandler()
+                    ],
+                    format="%(levelname)s:%(threadName)s:%(name)s:%(message)s")
+
+LOGGER=logging.getLogger(__name__)
 
 app = flask.Flask(__name__)
 cache = Cache(app, config={
@@ -17,6 +31,8 @@ cache = Cache(app, config={
 @cache.cached()
 def get_feed(tag=None):
     """ Retrieve the Flickr feed, with the optional tag """
+    LOGGER.debug("getting feed for %s", tag)
+
     params = {'format': 'atom'}
     if tag:
         params['tags'] = tag
@@ -35,6 +51,8 @@ def get_feed(tag=None):
                 item_tags.append(itag)
         item['tags'] = item_tags
 
+    LOGGER.debug("finished retrieving")
+
     return feed
 
 
@@ -49,6 +67,7 @@ def filter_description(content):
 @app.route('/<string:tag>')
 def flrig(tag=None):
     """ main page handler """
+    LOGGER.debug("root %s", tag)
     if tag and wordfilter.Wordfilter().blacklisted(tag):
         raise http_error.NotFound("I don't know what that word means")
 
@@ -59,6 +78,7 @@ def flrig(tag=None):
             tag=tag,
             filter_description=filter_description)
     except (Timeout, ConnectionError) as ex:
+        LOGER.warning("Upstream error for tag %s", tag)
         return flask.render_template(
             'error.html',
             error=ex)
