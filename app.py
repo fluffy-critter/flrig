@@ -64,13 +64,21 @@ def filter_description(content):
     return flask.Markup('\n'.join(lines))
 
 
-@app.route('/')
 @app.route('/<string:tag>')
+def tagged(tag):
+    ''' hopefully-temporary mitigation for LLM bot flood '''
+    return flask.redirect('/')
+
+
+@app.route('/')
 def flrig(tag=None):
     """ main page handler """
     LOGGER.debug("root %s", tag)
     if tag and wordfilter.Wordfilter().blacklisted(tag):
         raise http_error.NotFound("I don't know what that word means")
+
+    # temporary (hopefully) mitigation due to LLM bot flood
+    tag = None
 
     try:
         return flask.render_template(
