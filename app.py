@@ -3,6 +3,7 @@
 import feedparser
 import flask
 import requests
+import requests.exceptions
 import werkzeug.exceptions as http_error
 import wordfilter
 from flask_caching import Cache
@@ -77,7 +78,7 @@ def flrig(tag=None):
             feed=get_feed(tag),
             tag=tag,
             filter_description=filter_description)
-    except (Timeout, ConnectionError) as ex:
+    except requests.exceptions.RequestException as ex:
         LOGER.warning("Upstream error for tag %s", tag)
         return flask.render_template(
             'error.html',
