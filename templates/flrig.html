@@ -55,7 +55,7 @@
 
   <div class="content">{{filter_description(item.description)}}</div>
 
-  {% set tags=item.tags|selectattr('term')|list %}
+  {% set tags=None and item.tags|selectattr('term')|list %}
   {% if tags %}
   <div class="tags">See more: <ul>
   {% for tag in tags %}
