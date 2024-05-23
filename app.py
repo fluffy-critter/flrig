@@ -87,7 +87,7 @@ def flrig(tag=None):
             tag=tag,
             filter_description=filter_description)
     except requests.exceptions.RequestException as ex:
-        LOGER.warning("Upstream error for tag %s", tag)
+        LOGGER.warning("Upstream error for tag %s", tag)
         return flask.render_template(
             'error.html',
             error=ex)
