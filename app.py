@@ -78,7 +78,7 @@ def flrig(tag=None):
         raise http_error.NotFound("I don't know what that word means")
 
     # temporary (hopefully) mitigation due to LLM bot flood
-    tag = None
+    # tag = None
 
     try:
         return flask.render_template(
