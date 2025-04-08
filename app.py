@@ -64,13 +64,8 @@ def filter_description(content):
     return flask.Markup('\n'.join(lines))
 
 
-@app.route('/<string:tag>')
-def tagged(tag):
-    ''' hopefully-temporary mitigation for LLM bot flood '''
-    return flask.redirect('/')
-
-
 @app.route('/')
+@app.route('/<string:tag>')
 def flrig(tag=None):
     """ main page handler """
     LOGGER.debug("root %s", tag)
