@@ -10,6 +10,7 @@ from flask_caching import Cache
 import logging
 import logging.handlers
 import os
+import markupsafe
 
 APP_PATH = os.path.dirname(os.path.abspath(__file__))
 logging.basicConfig(level=logging.INFO,
@@ -61,7 +62,7 @@ def filter_description(content):
     """ Fix the item description """
     lines = content.splitlines()[2:]
 
-    return flask.Markup('\n'.join(lines))
+    return markupsafe.Markup('\n'.join(lines))
 
 
 @app.route('/')
