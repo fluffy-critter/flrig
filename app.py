@@ -11,6 +11,7 @@ import logging
 import logging.handlers
 import os
 import markupsafe
+import user_agents
 
 APP_PATH = os.path.dirname(os.path.abspath(__file__))
 logging.basicConfig(level=logging.INFO,
@@ -81,7 +82,8 @@ def flrig(tag=None):
             'flrig.html',
             feed=get_feed(tag),
             tag=tag,
-            filter_description=filter_description)
+            filter_description=filter_description,
+            is_bot = user_agents.parse(flask.request.headers.get('User-Agent')).is_bot)
     except requests.exceptions.RequestException as ex:
         LOGGER.warning("Upstream error for tag %s", tag)
         return flask.render_template(
