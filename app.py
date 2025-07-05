@@ -70,6 +70,9 @@ def filter_description(content):
 
     return markupsafe.Markup('\n'.join(lines))
 
+@app.before_request
+def is_bot():
+    flask.g.is_bot = user_agents.parse(flask.request.headers.get('User-Agent')).is_bot
 
 @app.route('/')
 @app.route('/<string:tag>')
@@ -79,10 +82,8 @@ def flrig(tag=None):
     if tag and wordfilter.Wordfilter().blacklisted(tag):
         raise http_error.NotFound("I don't know what that word means")
 
-    is_bot = user_agents.parse(flask.request.headers.get('User-Agent')).is_bot
-
     # if there's a tag and no valid session ID, send over to the pseudo-captcha
-    if tag and not is_bot and not flask.session.get('sid'):
+    if tag and not flask.g.is_bot and not flask.session.get('sid'):
         return flask.render_template('gatekeep.html', sid=str(uuid.uuid4())), 401
 
     try:
@@ -90,8 +91,7 @@ def flrig(tag=None):
             'flrig.html',
             feed=get_feed(tag),
             tag=tag,
-            filter_description=filter_description,
-            is_bot=is_bot)
+            filter_description=filter_description)
     except requests.exceptions.RequestException as ex:
         LOGGER.warning("Upstream error for tag %s", tag)
         return flask.render_template(

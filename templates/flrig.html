@@ -59,7 +59,7 @@
   <div class="content">{{filter_description(item.description)}}</div>
 
   {% set tags=item.tags|selectattr('term')|list %}
-  {% if tags and not is_bot %}
+  {% if tags and not g.is_bot %}
   <div class="tags">See more: <ul>
   {% for tag in tags %}
   <li><a rel="noindex nofollow" href="{{url_for('flrig', tag=tag.term)}}">{{tag.term}}</a></li>
