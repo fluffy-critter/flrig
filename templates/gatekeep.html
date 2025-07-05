@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html><head><title>Sentience test</title>
+<script>
+window.addEventListener("load", () => {
+    document.forms['proxy'].submit();
+});
+</script>
+</head>
+<body>
+<h1>Sentience check</h1>
+
+<form method="POST" id='proxy'>
+    <input type="hidden" name="sid" value="{{sid}}">
+    <input type="submit" value="I'm not a bot">
+</form>
+</body>
+</html>
