@@ -84,7 +84,7 @@ def flrig(tag=None):
 
     # if there's a tag and no valid session ID, send over to the pseudo-captcha
     if tag and not flask.g.is_bot and not flask.session.get('sid'):
-        return flask.render_template('gatekeep.html', sid=str(uuid.uuid4())), 401
+        return flask.render_template('gatekeep.html', sid=str(uuid.uuid4())), 429
 
     try:
         return flask.render_template(
