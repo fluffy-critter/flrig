@@ -1,19 +1,21 @@
 """ Flickr Random Image Generatr """
 
-from werkzeug.middleware.proxy_fix import ProxyFix
-import feedparser
-import flask
-import requests
-import requests.exceptions
-import werkzeug.exceptions as http_error
-import wordfilter
-from flask_caching import Cache
 import logging
 import logging.handlers
 import os
-import markupsafe
-import user_agents
+import re
 import uuid
+
+import feedparser
+import flask
+import markupsafe
+import requests
+import requests.exceptions
+import user_agents
+import werkzeug.exceptions as http_error
+import wordfilter
+from flask_caching import Cache
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 APP_PATH = os.path.dirname(os.path.abspath(__file__))
 logging.basicConfig(level=logging.INFO,
@@ -70,9 +72,13 @@ def filter_description(content):
 
     return markupsafe.Markup('\n'.join(lines))
 
+
 @app.before_request
 def is_bot():
-    flask.g.is_bot = user_agents.parse(flask.request.headers.get('User-Agent')).is_bot
+    ua_string = flask.request.headers.get('User-Agent')
+    flask.g.is_bot = (re.search(r'\+https?://', ua_string) or
+                      user_agents.parse(ua_string).is_bot)
+
 
 @app.route('/')
 @app.route('/<string:tag>')
