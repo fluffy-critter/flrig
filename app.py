@@ -32,7 +32,7 @@ app = flask.Flask(__name__)
 app.secret_key = str(uuid.uuid4())
 
 cache = Cache(app, config={
-    'CACHE_TYPE': 'memcached',
+    'CACHE_TYPE': 'MemcachedCache',
     'CACHE_DEFAULT_TIMEOUT': 60,
     'CACHE_KEY_PREFIX': 'flrig.beesbuzz.biz',
 })
