@@ -16,6 +16,7 @@ wordfilter = "^0.2.7"
 hypercorn = "^0.17.3"
 gunicorn = "^23.0.0"
 user-agents = "^2.2.0"
+arrow = "^1.4.0"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^2.0.1"
