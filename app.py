@@ -19,7 +19,7 @@ from flask_caching import Cache
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 APP_PATH = os.path.dirname(os.path.abspath(__file__))
-logging.basicConfig(level=logging.DEBUG,
+logging.basicConfig(level=logging.WARNING,
                     handlers=[
                         logging.handlers.TimedRotatingFileHandler(
                             os.path.join(APP_PATH, 'logs', 'flrig.log'), when='D'),
