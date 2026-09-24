@@ -19,7 +19,7 @@ from flask_caching import Cache
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 APP_PATH = os.path.dirname(os.path.abspath(__file__))
-logging.basicConfig(level=logging.WARNING,
+logging.basicConfig(level=logging.DEBUG if 'FLASK_DEBUG' in os.environ else logging.WARNING,
                     handlers=[
                         logging.handlers.TimedRotatingFileHandler(
                             os.path.join(APP_PATH, 'logs', 'flrig.log'), when='D'),
@@ -30,7 +30,14 @@ logging.basicConfig(level=logging.WARNING,
 LOGGER = logging.getLogger(__name__)
 
 app = flask.Flask(__name__)
-app.secret_key = str(uuid.uuid4())
+
+if not os.path.isfile('.sessionkey'):
+    import uuid
+    with open('.sessionkey', 'w') as file:
+        file.write(str(uuid.uuid4()))
+    os.chmod('.sessionkey', 0o600)
+with open('.sessionkey') as file:
+    app.secret_key = file.read()
 
 cache = Cache(app, config={
     'CACHE_TYPE': 'MemcachedCache',
@@ -123,14 +130,11 @@ def flrig(tag=None):
         try:
             sid, token = flask.session['sid']
             now = arrow.utcnow()
-            LOGGER.debug("now=%s sid=%s", now, arrow.get(sid))
-            LOGGER.debug("token=%s key=%s", token, keymaster(sid))
-            if not (now.shift(hours=-1) < arrow.get(float(sid)) < now and
-                keymaster(sid) == token):
-                LOGGER.debug("session invalid")
+            if arrow.get(float(sid)) < now.shift(hours=-1) or keymaster(sid) != token:
+                LOGGER.debug("Session expired; time=%s now=%s", sid, now.timestamp())
                 raise werkzeug.exceptions.TooManyRequests(retry_after=3600)
         except (KeyError, ValueError, arrow.ParserError) as e:
-            LOGGER.debug("missing or malformed session: %s", e)
+            LOGGER.debug("missing or malformed session: %s %s", type(e), e)
             raise werkzeug.exceptions.TooManyRequests(retry_after=3600)
 
     if tag and wordfilter.Wordfilter().blacklisted(tag):
@@ -160,7 +164,7 @@ def gatekeep(tag=None):
         raise werkzeug.exceptions.TooManyRequests(retry_after=3600)
 
     flask.session['sid'] = (sid, keymaster(sid))
-    return flask.redirect(flask.url_for('flrig', tag=tag))
+    return flask.redirect(flask.url_for('flrig', tag=tag), code=303)
 
 
 @app.route('/robots.txt')
