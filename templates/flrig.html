@@ -21,6 +21,10 @@
 
 <p>
 
+{% if g.is_bot %}
+  <!-- hello robo -->
+{% endif %}
+
 {% block content %}
 {% for item in feed.entries %}
 <div class="photo">
