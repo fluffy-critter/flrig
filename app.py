@@ -168,6 +168,11 @@ def robots_txt():
     """ robots.txt handler """
     return flask.send_file('robots.txt')
 
+@app.route('/favicon.ico')
+def favicon():
+    """ favicon handler """
+    return 'nope', 404
+
 
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
